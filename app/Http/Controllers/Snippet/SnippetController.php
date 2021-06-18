@@ -54,9 +54,9 @@ class SnippetController extends ApiController
 
             $body["expires_at"] = Carbon::parse($body["expires_at"])->addSeconds(30);
 
-            $formattedData = json_encode($body,JSON_PRETTY_PRINT);
+//            Storage::delete()
 
-            $response = $this->saveResponseToFile($name,$formattedData);
+            $response = $this->saveResponseToFile($name,$body);
             if($response){
                 return $this->successResponse($body,Response::HTTP_CREATED);
             }
@@ -65,38 +65,20 @@ class SnippetController extends ApiController
         }
 
 
-
-      //  return Carbon::parse($data["expires_at"])->diffInSeconds(Carbon::now());
-
-
-//        if(Carbon::parse($data["expires_at"])->diffInSeconds(Carbon::now()) > 30){
-//            return $this->errorResponse("",Response::HTTP_NOT_FOUND);
-//        }
-//
-//        Storage::delete("snippets/".$fileName);
-//        $data["expires_at"] = Carbon::parse($data["expires_at"])->addSeconds(30);
-//        $response = Storage::disk("local")->put("snippets/".$fileName,json_encode($data,JSON_PRETTY_PRINT));
-//
-//        if($response){
-//            return $this->successResponse($data,Response::HTTP_OK);
-//        }
-
     }
 
     private function saveResponseToFile($fileName,$body): bool
     {
         $fileName = $fileName . ".txt";
         $data = json_encode($body,JSON_PRETTY_PRINT);
-
+     //   Storage::delete("snippets/".$fileName);
         return Storage::disk("local")->put("snippets/".$fileName,$data);
     }
 
     private  function getResponseFromFile($fileName)
     {
         $fileName = $fileName . ".txt";
-
         $snippet = Storage::get("snippets/".$fileName);
-
          return json_decode($snippet,true);
     }
 }
