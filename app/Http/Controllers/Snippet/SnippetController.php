@@ -52,7 +52,7 @@ class SnippetController extends ApiController
                 return $this->errorResponse("",Response::HTTP_NOT_FOUND);
             }
 
-            $body["expires_at"] = Carbon::now();
+            $body["expires_at"] = Carbon::now()->addSeconds(30);
 
 //            Storage::delete()
 
